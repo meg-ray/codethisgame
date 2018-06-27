@@ -51,7 +51,7 @@ GAME_WINDOW = display.set_mode(WINDOW_RES)
 display.set_caption('Vampire Pizza')
 
 #set up background image
-background_img = image.load('restraunt.jpg')
+background_img = image.load('restaurant.jpg')
 background_surf = Surface.convert(background_img)
 BACKGROUND = transform.scale(background_surf, (WINDOW_RES))
 
