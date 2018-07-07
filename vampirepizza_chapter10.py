@@ -23,13 +23,12 @@ WINDOW_RES = (WINDOW_WIDTH, WINDOW_HEIGHT)
 WIDTH = 100
 HEIGHT = 100
 
-# Define some colors
-BLACK = (0, 0, 0)
+# Define colors
 WHITE = (255, 255, 255)
 
 #Set up rates
-FRAMERATE = 60
 SPAWNRATE = 360
+FRAMERATE = 60
 
 #Set up counters
 STARTING_BUCKS = 15
@@ -48,16 +47,15 @@ SLOW_SPEED = 1
 GAME_WINDOW = display.set_mode(WINDOW_RES)
 display.set_caption('Vampire Pizza')
 
+#set up enemy imgage
+pizza_img = image.load('vampire.png')
+pizza_surf = Surface.convert(pizza_img)
+VAMPIRE_PIZZA = transform.scale(pizza_surf, (100, 100))
+
 #set up background image
 background_img = image.load('restaurant.jpg')
 background_surf = Surface.convert(background_img)
 BACKGROUND = transform.scale(background_surf, (WINDOW_RES))
-
-#set up enemy imgage
-pizza_img = image.load('vampire.png')
-pizza_surf = Surface.convert(pizza_img)
-VAMPIRE_PIZZA = transform.scale(pizza_surf, (WIDTH, HEIGHT))
-
 
 #---------------------------------------------
 #Set up classes
@@ -73,7 +71,7 @@ class VampireSprite(sprite.Sprite):
         all_vampires.add(self)
         self.image = VAMPIRE_PIZZA.copy()
         y = 50 + self.lane * 100
-        self.rect = self.image.get_rect(center=(950, y))
+        self.rect = self.image.get_rect(center=(1100, y))
 
     #This function moves the enemies from right to left and destroys them after they've left the screen
     def update(self, game_window, counters):
@@ -171,6 +169,7 @@ while running:
         #Set up the background tiles to respond to a mouse click
         elif event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
+            tile_grid[y // 100][x //100].effect = True
 
 
 #-------------------------------------------------

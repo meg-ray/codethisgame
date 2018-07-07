@@ -23,21 +23,13 @@ WINDOW_RES = (WINDOW_WIDTH, WINDOW_HEIGHT)
 WIDTH = 100
 HEIGHT = 100
 
-# Define colors
+# Define some colors
 WHITE = (255, 255, 255)
 
 #Set up rates
 SPAWNRATE = 360
 FRAMERATE = 60
 
-#Set up counters
-STARTING_BUCKS = 15
-BUCK_RATE = 120
-BUCK_BOOSTER = 1
-
-#Define speeds
-REG_SPEED = 2
-SLOW_SPEED = 1
 
 #--------------------------------------------------------------
 #Load Assets 
@@ -57,19 +49,6 @@ background_img = image.load('restaurant.jpg')
 background_surf = Surface.convert(background_img)
 BACKGROUND = transform.scale(background_surf, (WINDOW_RES))
 
-# tile trap images
-garlic_img = image.load('garlic.jpg')
-garlic_surf = Surface.convert(garlic_img)
-GARLIC = transform.scale(garlic_surf, (WIDTH, HEIGHT))
-GARLIC.set_alpha(127)
-cutter_img = image.load('pizzacutter.png')
-cutter_surf = Surface.convert(cutter_img)
-CUTTER = transform.scale(cutter_surf, (WIDTH, HEIGHT))
-CUTTER.set_alpha(127)
-pepperoni_img = image.load('pepperoni.jpg')
-pepperoni_surf = Surface.convert(pepperoni_img)
-PEPPERONI = transform.scale(pepperoni_surf, (WIDTH, HEIGHT))
-PEPPERONI.set_alpha(127)
 
 #---------------------------------------------
 #Set up classes
@@ -80,7 +59,7 @@ class VampireSprite(sprite.Sprite):
     #This function creates an instance of the enemy
     def __init__(self):
         super(VampireSprite, self).__init__()
-        self.speed = REG_SPEED
+        self.speed = 2
         self.lane = randint(0, 4)
         all_vampires.add(self)
         self.image = VAMPIRE_PIZZA.copy()
@@ -88,61 +67,11 @@ class VampireSprite(sprite.Sprite):
         self.rect = self.image.get_rect(center=(1100, y))
 
     #This function moves the enemies from right to left and destroys them after they've left the screen
-    def update(self, game_window, counters):
+    def update(self, game_window):
         game_window.blit(BACKGROUND, (self.rect.x, self.rect.y), self.rect)
         self.rect.x -= self.speed
         game_window.blit(self.image, (self.rect.x, self.rect.y))
 
-
-class Counters:
-
-    def __init__(self, pizza_bucks, buck_rate, buck_booster):
-        self.loop_count = 0
-        self.display_font = pygame.font.Font('pizza-font.ttf', 25)
-        self.pizza_bucks = pizza_bucks
-        self.buck_rate = buck_rate
-        self.buck_booster = buck_booster
-        self.bucks_rect = None
-
-    def increment_bucks(self):
-        if self.loop_count % self.buck_rate == 0:
-            self.pizza_bucks += self.buck_booster
-
-    def draw_bucks(self, game_window):
-        if bool(self.bucks_rect):
-            game_window.blit(BACKGROUND, (self.bucks_rect.x, self.bucks_rect.y), self.bucks_rect)
-        bucks_surf = self.display_font.render(str(self.pizza_bucks), True, WHITE)
-        self.bucks_rect = bucks_surf.get_rect()
-        self.bucks_rect.x = WINDOW_WIDTH - 50
-        self.bucks_rect.y = WINDOW_HEIGHT - 50
-        game_window.blit(bucks_surf, self.bucks_rect)
-
-    def update(self, game_window):
-        self.loop_count += 1
-        self.increment_bucks()
-        self.draw_bucks(game_window)
-
-
-#Set up the different kinds of traps
-class Trap(object):
-
-    def __init__(self, trap_kind, cost, trap_img):
-        self.trap_kind = trap_kind
-        self.cost = cost
-        self.trap_img = trap_img
-
-
-class TrapApplicator(object):
-
-    def __init__(self):
-        self.selected = None
-
-    def select_trap(self, trap):
-        if trap.cost <= counters.pizza_bucks:
-            self.selected = trap
-
-    def select_tile(self, tile, counters):
-        self.selected = tile.set_trap(self.selected, counters)
 
 
 #Create a class of sprites. Each tile has an invisible interactive field attached to it which is a sprite in this class. 
@@ -153,19 +82,13 @@ class BackgroundTile(sprite.Sprite):
         self.effect = False
 
 
+
+
 #-------------------------------------------------------------
 #Create class instances
 
 #create a sprite group for all the VampireSprite instances
 all_vampires = sprite.Group()
-
-counters = Counters(STARTING_BUCKS, BUCK_RATE, BUCK_BOOSTER)
-
-SLOW = Trap('SLOW', 5, GARLIC)
-DAMAGE = Trap('DAMAGE', 3, CUTTER)
-EARN = Trap('EARN', 7, PEPPERONI)
-
-trap_applicator = TrapApplicator()
 
 
 #--------------------------------------------------------------
@@ -179,7 +102,7 @@ for row in range(6):
     row_of_tiles = []
     tile_grid.append(row_of_tiles)
     for column in range(11):
-        new_tile = BackgroundTile(column, row)
+        new_tile = BackgroundTile()
         new_tile.rect = pygame.Rect(WIDTH * column, HEIGHT * row, WIDTH, HEIGHT)
         row_of_tiles.append(new_tile) 
         draw.rect(BACKGROUND, tile_color, (WIDTH * column, HEIGHT * row, WIDTH, HEIGHT), 1)
@@ -209,7 +132,9 @@ while running:
         #Set up the background tiles to respond to a mouse click
         elif event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
-            trap_applicator.select_tile(tile_grid[y // 100][x // 100], counters)
+            tile_grid[y // 100][x //100].effect = True
+            print(x, y)
+            print('You clicked me!')
 
 
 #-------------------------------------------------
@@ -224,36 +149,14 @@ while running:
     #draw the background grid
     for tile_row in tile_grid:
         for tile in tile_row:
-            if bool(tile.trap):
-                GAME_WINDOW.blit(BACKGROUND, (tile.rect.x, tile.rect.y), tile.rect)
-
-    #set up collision detection
-    for vampire in all_vampires:
-        tile_row = tile_grid[vampire.rect.y // 100]
-        vampire_left_side_x = vampire.rect.x // 100
-        vampire_right_side_x = (vampire.rect.x + vampire.rect.width) // 100
-        if -1 < vampire_left_side_x < 10:
-            left_tile = tile_row[vampire_left_side_x]
-        else:
-            left_tile = None
-        if -1 < vampire_right_side_x < 10:
-            right_tile_wall = tile_row[vampire_right_side_x]
-        else:
-            right_tile = None
-        if bool(left_tile) and left_tile.effect:
-            vampire.speed = SLOW_SPEED
-        if bool(right_tile) and right_tile.x != left_tile.x and right_tile.effect:
-            vampire.speed = SLOW_SPEED
-        if vampire.rect.x <= 0:
-            vampire.kill()
+            GAME_WINDOW.blit(BACKGROUND, (tile.rect.x, tile.rect.y), tile.rect)
 
 
 #-------------------------------------------------
 #Update displays
     for vampire in all_vampires:
-        vampire.update(GAME_WINDOW, counters)
+        vampire.update(GAME_WINDOW)
 
-    counters.update(GAME_WINDOW)
     display.update()
 
     #set the framerate

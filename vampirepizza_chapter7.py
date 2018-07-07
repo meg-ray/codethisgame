@@ -30,10 +30,6 @@ WHITE = (255, 255, 255)
 SPAWNRATE = 360
 FRAMERATE = 60
 
-#Define speeds
-REG_SPEED = 2
-SLOW_SPEED = 1
-
 #--------------------------------------------------------------
 #Load Assets 
 
@@ -62,7 +58,7 @@ class VampireSprite(sprite.Sprite):
     #This function creates an instance of the enemy
     def __init__(self):
         super(VampireSprite, self).__init__()
-        self.speed = REG_SPEED
+        self.speed = 2
         self.lane = randint(0, 4)
         all_vampires.add(self)
         self.image = VAMPIRE_PIZZA.copy()
@@ -77,16 +73,6 @@ class VampireSprite(sprite.Sprite):
 
 
 
-#Create a class of sprites. Each tile has an invisible interactive field attached to it which is a sprite in this class. 
-class BackgroundTile(sprite.Sprite):
-
-    def __init__(self):
-        super(BackgroundTile, self).__init__()
-        self.effect = False
-
-
-
-
 #-------------------------------------------------------------
 #Create class instances
 
@@ -97,21 +83,13 @@ all_vampires = sprite.Group()
 #--------------------------------------------------------------
 # Initialize and draw Background Grid
 
-# Create an empty list to hold the tile grid
-tile_grid = []
 # Populate the grid
 tile_color = WHITE
 for row in range(6):
-    row_of_tiles = []
-    tile_grid.append(row_of_tiles)
     for column in range(11):
-        new_tile = BackgroundTile()
-        new_tile.rect = pygame.Rect(WIDTH * column, HEIGHT * row, WIDTH, HEIGHT)
-        row_of_tiles.append(new_tile) 
         draw.rect(BACKGROUND, tile_color, (WIDTH * column, HEIGHT * row, WIDTH, HEIGHT), 1)
 
 GAME_WINDOW.blit(BACKGROUND, (0,0))
-
 
 
 
@@ -132,45 +110,12 @@ while running:
         if event.type == QUIT: 
             running = False
 
-        #Set up the background tiles to respond to a mouse click
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            x, y = pygame.mouse.get_pos()
-            tile_grid[y // 100][x //100].effect = True
-
 
 #-------------------------------------------------
 #Create VampireSprite instances
 
     if randint(0, SPAWNRATE) == 1:
         VampireSprite()
-
-#------------------------------------------------
-#Set up collision detection
-
-    #draw the background grid
-    for tile_row in tile_grid:
-        for tile in tile_row:
-            GAME_WINDOW.blit(BACKGROUND, (tile.rect.x, tile.rect.y), tile.rect)
-
-    #set up collision detection
-    for vampire in all_vampires:
-        tile_row = tile_grid[vampire.rect.y // 100]
-        vampire_left_side_x = vampire.rect.x // 100
-        vampire_right_side_x = (vampire.rect.x + vampire.rect.width) // 100
-        if -1 < vampire_left_side_x < 10:
-            left_tile = tile_row[vampire_left_side_x]
-        else:
-            left_tile = None
-        if -1 < vampire_right_side_x < 10:
-            right_tile_wall = tile_row[vampire_right_side_x]
-        else:
-            right_tile = None
-        if bool(left_tile) and left_tile.effect:
-            vampire.speed = SLOW_SPEED
-        if bool(right_tile) and right_tile.x != left_tile.x and right_tile.effect:
-            vampire.speed = SLOW_SPEED
-        if vampire.rect.x <= 0:
-            vampire.kill()
 
 
 #-------------------------------------------------
