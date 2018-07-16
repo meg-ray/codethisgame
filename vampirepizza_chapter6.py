@@ -21,7 +21,6 @@ WIDTH = 100
 HEIGHT = 100
 
 # Define some colors
-BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 #Set up rates
@@ -55,7 +54,7 @@ class VampireSprite(sprite.Sprite):
 
     #This function creates an instance of the enemy
     def __init__(self):
-        super(VampireSprite, self).__init__()
+        super().__init__()
         self.speed = 2
         self.lane = randint(0, 4)
         all_vampires.add(self)
@@ -110,7 +109,7 @@ while running:
 #-------------------------------------------------
 #Create VampireSprite instances
 
-    if randint(0, SPAWNRATE) == 1:
+    if randint(1, SPAWNRATE) == 1:
         VampireSprite()
 
 

@@ -65,7 +65,7 @@ class VampireSprite(sprite.Sprite):
 
     #This function creates an instance of the enemy
     def __init__(self):
-        super(VampireSprite, self).__init__()
+        super().__init__()
         self.speed = REG_SPEED
         self.lane = randint(0, 4)
         all_vampires.add(self)
@@ -80,7 +80,7 @@ class VampireSprite(sprite.Sprite):
         game_window.blit(self.image, (self.rect.x, self.rect.y))
 
 
-class Counters:
+class Counters(object):
 
     def __init__(self, pizza_bucks, buck_rate, buck_booster):
         self.loop_count = 0
@@ -113,7 +113,7 @@ class Counters:
 class BackgroundTile(sprite.Sprite):
 
     def __init__(self):
-        super(BackgroundTile, self).__init__()
+        super().__init__()
         self.effect = False
 
 
@@ -175,7 +175,7 @@ while running:
 #-------------------------------------------------
 #Create VampireSprite instances
 
-    if randint(0, SPAWNRATE) == 1:
+    if randint(1, SPAWNRATE) == 1:
         VampireSprite()
 
 #------------------------------------------------

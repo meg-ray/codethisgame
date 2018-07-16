@@ -35,10 +35,11 @@ GAME_WINDOW.blit(VAMPIRE_PIZZA, (900,400))
 
 
 #Add a giant pepperoni
-draw.circle(GAME_WINDOW, (255, 0, 0, 0.5), (925, 425), 25, 0)
+draw.circle(GAME_WINDOW, (255, 0, 0), (925, 425), 25, 0)
 #Put it in a pizza box
-draw.rect(GAME_WINDOW, (160, 82, 45, 0.0), (895, 395, 110, 110), 5)
-
+draw.rect(GAME_WINDOW, (160, 82, 45), (895, 395, 110, 110), 5)
+#Keep practicing
+draw.rect(GAME_WINDOW, (0, 0, 255), (50, 50, 100, 100), 0)
 
 #--------------------------------------------------------------------------------------------------------------------------------------
 #Start Main Game Loop

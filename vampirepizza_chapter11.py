@@ -33,7 +33,7 @@ FRAMERATE = 60
 #Set up counters
 STARTING_BUCKS = 15
 BUCK_RATE = 120
-BUCK_BOOSTER = 1
+STARTING_BUCK_BOOSTER = 1
 
 #Define speeds
 REG_SPEED = 2
@@ -79,7 +79,7 @@ class VampireSprite(sprite.Sprite):
 
     #This function creates an instance of the enemy
     def __init__(self):
-        super(VampireSprite, self).__init__()
+        super().__init__()
         self.speed = REG_SPEED
         self.lane = randint(0, 4)
         all_vampires.add(self)
@@ -94,7 +94,7 @@ class VampireSprite(sprite.Sprite):
         game_window.blit(self.image, (self.rect.x, self.rect.y))
 
 
-class Counters:
+class Counters(object):
 
     def __init__(self, pizza_bucks, buck_rate, buck_booster):
         self.loop_count = 0
@@ -149,7 +149,7 @@ class TrapApplicator(object):
 class BackgroundTile(sprite.Sprite):
 
     def __init__(self):
-        super(BackgroundTile, self).__init__()
+        super().__init__()
         self.effect = False
 
 
@@ -159,7 +159,7 @@ class BackgroundTile(sprite.Sprite):
 #create a sprite group for all the VampireSprite instances
 all_vampires = sprite.Group()
 
-counters = Counters(STARTING_BUCKS, BUCK_RATE, BUCK_BOOSTER)
+counters = Counters(STARTING_BUCKS, BUCK_RATE, STARTING_BUCK_BOOSTER)
 
 SLOW = Trap('SLOW', 5, GARLIC)
 DAMAGE = Trap('DAMAGE', 3, CUTTER)
@@ -215,7 +215,7 @@ while running:
 #-------------------------------------------------
 #Create VampireSprite instances
 
-    if randint(0, SPAWNRATE) == 1:
+    if randint(1, SPAWNRATE) == 1:
         VampireSprite()
 
 #------------------------------------------------

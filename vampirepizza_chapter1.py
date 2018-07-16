@@ -22,7 +22,7 @@ WINDOW_RES = (WINDOW_WIDTH, WINDOW_HEIGHT)
 
 #create window
 GAME_WINDOW = display.set_mode(WINDOW_RES)
-display.set_caption('Vampire Pizza')
+display.set_caption('Attack of the Vampire Pizzas!')
 
 
 #--------------------------------------------------------------------------------------------------------------------------------------

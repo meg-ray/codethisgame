@@ -34,7 +34,7 @@ display.set_caption('Vampire Pizza')
 #set up enemy imgage
 pizza_img = image.load('vampire.png')
 pizza_surf = Surface.convert(pizza_img)
-VAMPIRE_PIZZA = transform.scale(pizza_surf, (100, 100))
+VAMPIRE_PIZZA = transform.scale(pizza_surf, (WIDTH, HEIGHT))
 
 #set up background image
 background_img = image.load('restaurant.jpg')
