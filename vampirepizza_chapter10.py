@@ -33,7 +33,7 @@ FRAMERATE = 60
 #Set up counters
 STARTING_BUCKS = 15
 BUCK_RATE = 120
-BUCK_BOOSTER = 1
+STARTING_BUCK_BOOSTER = 1
 
 #Define speeds
 REG_SPEED = 2
@@ -125,7 +125,7 @@ class BackgroundTile(sprite.Sprite):
 #create a sprite group for all the VampireSprite instances
 all_vampires = sprite.Group()
 
-counters = Counters(STARTING_BUCKS, BUCK_RATE, BUCK_BOOSTER)
+counters = Counters(STARTING_BUCKS, BUCK_RATE, STARTING_BUCK_BOOSTER)
 
 
 #--------------------------------------------------------------
