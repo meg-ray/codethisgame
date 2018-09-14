@@ -28,7 +28,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 #Set up rates
-FRAMERATE = 20
+FRAMERATE = 60
 SPAWNRATE = 360
 
 #Set up counters
@@ -61,12 +61,12 @@ BACKGROUND = transform.scale(background_surf, (WINDOW_RES))
 pizza_img = image.load('vampire.png')
 pizza_surf = Surface.convert(pizza_img)
 VAMPIRE_PIZZA = transform.scale(pizza_surf, (WIDTH, HEIGHT))
-speedy_img = image.load('speedy_vampire.png')
-speedy_surf = Surface.convert(speedy_img)
-SPEEDY_VAMPIRE = transform.scale(speedy_surf, (WIDTH, HEIGHT))
-zombie_img = image.load('zombie_vampire.png')
+were_img = image.load('WERE_PIZZA.png')
+were_surf = Surface.convert(were_img)
+WERE_PIZZA = transform.scale(were_surf, (WIDTH, HEIGHT))
+zombie_img = image.load('zombie_pizza.png')
 zombie_surf = Surface.convert(zombie_img)
-ZOMBIE_VAMPIRE = transform.scale(zombie_surf, (WIDTH, HEIGHT))
+ZOMBIE_PIZZA = transform.scale(zombie_surf, (WIDTH, HEIGHT))
 
 # tile trap images
 garlic_img = image.load('garlic.jpg')
@@ -135,11 +135,11 @@ class VampireSprite(sprite.Sprite):
 
 
 
-class SpeedyVampire(VampireSprite):
+class WerePizza(VampireSprite):
     def __init__(self):
-        super(SpeedyVampire, self).__init__()
+        super(WerePizza, self).__init__()
         self.speed = FAST_SPEED
-        self.image = SPEEDY_VAMPIRE.copy()
+        self.image = WERE_PIZZA.copy()
 
     def attack(self, tile):
         if tile.trap == SLOW:
@@ -150,11 +150,11 @@ class SpeedyVampire(VampireSprite):
 
 
 
-class ZombieVamprire(VampireSprite):
+class ZombiePizza(VampireSprite):
     def __init__(self):
-        super(ZombieVamprire, self).__init__()
+        super(ZombiePizza, self).__init__()
         self.health = STARTING_HEALTH * 2
-        self.image = ZOMBIE_VAMPIRE.copy()
+        self.image = ZOMBIE_PIZZA.copy()
 
     def update(self, GAME_WINDOW, counters):
         GAME_WINDOW.blit(BACKGROUND, (self.rect.x, self.rect.y), self.rect)
@@ -169,13 +169,13 @@ class ZombieVamprire(VampireSprite):
         else:
             percent_health = self.health * 100 / STARTING_HEALTH * 2
             if  percent_health > 80:
-                self.image = ZOMBIE_VAMPIRE.copy()
+                self.image = ZOMBIE_PIZZA.copy()
             elif percent_health > 65:
                 self.image = MED_HEALTH.copy()
             elif percent_health > 50:
                 self.image = LOW_HEALTH.copy()
             elif percent_health > 35:
-                self.image = ZOMBIE_VAMPIRE.copy()
+                self.image = ZOMBIE_PIZZA.copy()
             elif percent_health > 20:
                 self.image = MED_HEALTH.copy()
             else: 
@@ -307,11 +307,14 @@ class InactiveTile(BackgroundTile):
 #Create class instances
 
 #create a sprite group for all the VampireSprite instances
-enemy_types = []
 all_vampires = sprite.Group()
+
+#create an empty list for the enemy types and append instances of each type to the list
+enemy_types = []
 enemy_types.append(VampireSprite)
-enemy_types.append(SpeedyVampire)
-enemy_types.append(ZombieVamprire)
+enemy_types.append(WerePizza)
+enemy_types.append(ZombiePizza)
+
 #counters = Counters(STARTING_BUCKS, BUCK_RATE, BUCK_BOOSTER)
 counters = Counters(STARTING_BUCKS, BUCK_RATE, BUCK_BOOSTER, STARTING_REVIEWS, WIN_TIME)
 

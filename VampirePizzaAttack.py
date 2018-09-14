@@ -47,7 +47,7 @@ SLOW_SPEED = 1
 
 #create window
 GAME_WINDOW = display.set_mode(WINDOW_RES)
-display.set_caption('Vampire Pizza')
+display.set_caption('Attack of the Vampire Pizzas!')
 
 #set up enemy imgage
 pizza_img = image.load('vampire.png')
